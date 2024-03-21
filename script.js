@@ -1,67 +1,30 @@
-// DATA
-const airports = 'PHX BKK OKC JFK LAX MEX EZE HEL LOS LAP LIM'.split(' ');
+// create an array with nodes
+var nodes = new vis.DataSet([
+    {id: 1, label: 'Arsen'},
+    {id: 2, label: 'Danial'},
+    {id: 3, label: 'Nurlubek'},
+    {id: 4, label: 'Adil'},
+    {id: 5, label: 'iDOS'},
+    {id: 6, label: 'BSNF'},
+]);
 
-const routes = [
-    ['PHX', 'LAX'],
-    ['PHX', 'JFK'],
-    ['JFK', 'OKC'],
-    ['JFK', 'HEL'],
-    ['JFK', 'LOS'],
-    ['MEX', 'LAX'],
-    ['MEX', 'BKK'],
-    ['MEX', 'LIM'],
-    ['MEX', 'EZE'],
-    ['LIM', 'BKK'],
-];
+// create an array with edges
+var edges = new vis.DataSet([
+    {from: 1, to: 4},
+    {from: 1, to: 2},
+    {from: 2, to: 4},
+    {from: 2, to: 5}
+]);
 
-// The graph
-const adjacencyList = new Map();
+// create a network
+var container = document.getElementById('mynetwork');
 
-// Add node
-function addNode(airport) {
-    adjacencyList.set(airport, []);
-}
+// provide the data in the vis format
+var data = {
+    nodes: nodes,
+    edges: edges
+};
+var options = {};
 
-// Add edge, undirected
-function addEdge(origin, destination) {
-    adjacencyList.get(origin).push(destination);
-    adjacencyList.get(destination).push(origin);
-}
-
-// Create the Graph
-airports.forEach(addNode);
-routes.forEach(route => addEdge(...route));
-
-console.log(adjacencyList);
-
-//--------------------------------------------
-
-function dfs(start, visited = new Set()) {
-    console.log(start);
-    visited.add(start);
-
-    const graph = document.getElementById('graph');
-    const node = document.createElement('div');
-    node.classList.add('node');
-    node.textContent = start;
-
-    if (start === 'BKK') {
-        node.classList.add('final');
-    }
-
-    if (visited.size === airports.length) {
-        node.classList.add('active');
-    }
-
-    graph.appendChild(node);
-
-    const destinations = adjacencyList.get(start);
-
-    for (const destination of destinations) {
-        if (!visited.has(destination)) {
-            dfs(destination, visited);
-        }
-    }
-}
-
-dfs('PHX');
+// initialize your network!
+var network = new vis.Network(container, data, options);
