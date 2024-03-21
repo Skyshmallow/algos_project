@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-grid.min.css" integrity="sha384-izn5L2B8ufGg/0mRnucUy5oFB9EKlNcmcLiBL8excWli03rO+VBfF2xAIshkD2LI" crossorigin="anonymous">
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
     <title>Babai</title>
     <style type="text/css">
@@ -11,9 +13,19 @@
         }
     </style>
 </head>
+
 <body>
-<div id="mynetwork"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-4" id="mynetwork"></div>
+        <div class="col-2">
+            <textarea name="ar" id="ar" cols="30" rows="8"></textarea>
+            <button id="button">Enter</button>
+        </div>
+    </div>
+</div>
 
 <script src="script.js"></script>
 </body>
+
 </html>
