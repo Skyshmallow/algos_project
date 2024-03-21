@@ -1,0 +1,46 @@
+.node.active {
+    background-color: #b3ffcc;
+}
+
+.node.final {
+    background-color: #ff9999;
+}
+
+.edge {
+    height: 4px;
+}
+
+.edge.vertical {
+    width: 4px;
+}
+
+.edge.horizontal {
+    height: 4px;
+    width: 100px;
+}
+
+.edge.diagonal {
+    height: 4px;
+    width: 100px;
+    transform: rotate(45deg);
+}
+
+.edge.bend {
+    height: 4px;
+    width: 50px;
+}
+
+.edge.bend.vertical {
+    width: 4px;
+}
+
+.edge.bend.horizontal {
+    height: 4px;
+    width: 50px;
+}
+
+.edge.bend.diagonal {
+    height: 4px;
+    width: 50px;
+    transform: rotate(45deg);
+}
