@@ -18,11 +18,17 @@ var edges = new vis.DataSet([
 
 // create a network
 var container = document.getElementById('mynetwork');
+var options = {
+    edges: {
+        arrows: {
+            to: false
+        }
+    }
+};
 var data = {
     nodes: nodes,
     edges: edges
 };
-var options = {};
 var network = new vis.Network(container, data, options);
 
 // Add click event listener to the network
@@ -69,4 +75,24 @@ document.getElementById('button').addEventListener('click', function() {
         }
     });
     document.getElementById('ar').value = ''; // Clear the textarea
+});
+
+// Add event listener for the "Directed" button
+document.getElementById('directedButton').addEventListener('click', function() {
+    options.edges = {
+        arrows: {
+            to: true
+        }
+    };
+    network.setOptions(options);
+});
+
+// Add event listener for the "Undirected" button
+document.getElementById('undirectedButton').addEventListener('click', function() {
+    options.edges = {
+        arrows: {
+            to: false
+        }
+    };
+    network.setOptions(options);
 });
