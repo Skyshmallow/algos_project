@@ -1,36 +1,87 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- show code on site -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>    
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-grid.min.css" integrity="sha384-izn5L2B8ufGg/0mRnucUy5oFB9EKlNcmcLiBL8excWli03rO+VBfF2xAIshkD2LI" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
     <title>Babai</title>
-    <style type="text/css">
-        #mynetwork {
-            width: 600px;
-            height: 400px;
-            border: 1px solid lightgray;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-<div class="container">
+
+<audio id="soundEffect" preload="auto">
+    <source src="fire-torch-whoosh-2-186586.mp3" type="audio/mpeg">
+    <source src="movement-swipe-whoosh-3-186577.mp3" type="audio/mpeg">
+</audio>
+
+<div class="blue-container row">
+    <div class="col-md-auto">
+        <img src="https://sdu.edu.kz/wp-content/uploads/2023/08/logo-white.png" class="img-fluid" style="width: 80px; height: auto;" alt="SDU Logo">
+    </div>
+    <div class="col">
+        <div class="text mt-4 ">
+            <h1>Algorithm Project</h1>
+        </div>
+    </div>
+    
+</div>
+
+<div class="container mt-4 ">
     <div class="row">
         <div class="col-2">
             <button id="directedButton" class="btn btn-outline-info">Directed<i class="fa-solid fa-arrow-right"></i></button>
             <button id="undirectedButton" class="btn btn-outline-warning mt-1">Undirected<i class="fa-solid fa-minus"></i></button>
         </div>
         <div class="col-4" id="mynetwork"></div>
-        <div class="col-3"> 
-            <textarea name="ar" id="ar" cols="30" rows="8"></textarea>
+        <div class="col-2">
+            <textarea name="ar" id="ar" cols="25" rows="8" placeholder="Write: A B&#10;to connect A and B"></textarea>
             <button id="button" class="btn btn-outline-danger"><i class="fa-solid fa-fire"></i>Enter</button>
+            <button id="b_clearGraph" class="btn btn-outline-info ">Clear Graph</button>
+        </div>
+        <div class="col-2">
+            <textarea name="dfs_find" id="dfs_find" cols="25" rows="8" placeholder="Write: A B&#10;to find route between them"></textarea>
+            <button id="button_dfs" class="btn btn-outline-danger"><i class="fa-solid fa-fire"></i>Enter</button>
+            <button id="button_clear" class="btn btn-outline-info ">Clear Color</button>
         </div>
     </div>
 </div>
 
-<script src="script.js"></script>
+<div class="container mt-2 " style="background-color: #212153;">
+     <div class="row">
+    <div class="col-10  text "><p>By SDUdents</p></div>
+    <div class="col">
+        <img src="https://sun1-26.userapi.com/s/v1/if2/zV2bCrwbt_DgTIMok6uIk5vJ-aR-lNoUwo5n7wm96-fvT9fZWxQCuLsAp3LKEwZgsfzaD_4pkIAua0bc3rsNjv8V.jpg?quality=96&crop=112,107,856,856&as=50x50,100x100,200x200,400x400&ava=1&u=f9K2DO5LDFNhppqxtczLwEtzQPAnYWvRxkmMjRXYK6c&cs=200x200" alt="Arsen" style="border-radius: 50%; width: 40px;">
+        
+    </div>
+ </div>
+</div>
+
+<!-- code displayer -->
+<div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <iframe class="mt-2 mx-auto d-block" width="100%" height="315" src="https://www.youtube.com/embed/Ai4eh_OCxvw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="col-md-6">
+        <pre><code class="language-javascript">// JavaScript code
+const hello = "world";
+console.log(hello);
+ALASTOR TOP   
+        </code></pre>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 
 </html>
