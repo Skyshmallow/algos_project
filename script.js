@@ -1,5 +1,5 @@
-// create an array with initial nodes
-var nodes = new vis.DataSet([
+ // create an array with initial nodes
+ var nodes = new vis.DataSet([
     { id: 1, label: 'Arsen' },
     { id: 2, label: 'Danial' },
     { id: 3, label: 'Nurlubek' },
@@ -19,12 +19,21 @@ var edges = new vis.DataSet([
 // create a network
 var container = document.getElementById('mynetwork');
 var options = {
+    width: '100%',
+    height: '400px',
+    physics: {
+        stabilization: {
+            enabled: true,
+            iterations: 500, // Adjust as needed
+        }
+    },
     edges: {
         arrows: {
             to: false
         }
     }
 };
+
 var data = { nodes: nodes, edges: edges };
 var network = new vis.Network(container, data, options);
 
@@ -40,6 +49,49 @@ network.on('click', function(properties) {
         }
     }
 });
+
+
+// Function to generate a random graph
+function generateRandomGraph() {
+    // Clear existing nodes and edges
+    nodes.clear();
+    edges.clear();
+
+    // Number of nodes to generate
+    const numNodes = Math.floor(Math.random() * 10) + 5; // Random number between 5 and 14
+
+    // Create nodes
+    for (let i = 1; i <= numNodes; i++) {
+        nodes.add({ id: i, label: String.fromCharCode(65 + i - 1) }); // Use uppercase letters as labels
+    }
+
+    // Create edges
+    const maxEdges = Math.floor(numNodes * (numNodes - 1) / 2); // Maximum possible edges
+    const numEdges = Math.floor(Math.random() * maxEdges) + 1; // Random number of edges
+
+    // Create a set to store existing edges
+    const edgeSet = new Set();
+
+    // Add edges randomly
+    while (edgeSet.size < numEdges) {
+        const from = Math.floor(Math.random() * numNodes) + 1;
+        const to = Math.floor(Math.random() * numNodes) + 1;
+
+        // Ensure no self-loops and no duplicate edges
+        if (from !== to && !edgeSet.has(`${Math.min(from, to)}-${Math.max(from, to)}`)) {
+            edges.add({ from, to });
+            edgeSet.add(`${Math.min(from, to)}-${Math.max(from, to)}`);
+        }
+    }
+
+    // Update the network with the new data
+    network.setData({ nodes, edges });
+}
+
+// Add event listener to the "Generate" button
+document.getElementById('generate').addEventListener('click', generateRandomGraph);
+
+
 
 
 // Get the audio element
@@ -69,9 +121,6 @@ function playSwipeSound() {
     audioElement.play();
 }
 
-
-
-
 // Function to create a new node if it doesn't exist
 function createNode(label) {
     let existingNode = nodes.get().find(node => node.label === label);
@@ -84,8 +133,8 @@ function createNode(label) {
 }
 
 // Function to create a new edge
-function createEdge(fromNode, toNode, directed) {
-    edges.add({ from: fromNode, to: toNode, arrows: directed ? 'to' : undefined });
+function createEdge(fromNode, toNode) {
+    edges.add({ from: fromNode, to: toNode, arrows: undefined }); // Remove arrows for all edges
 }
 
 // Event listener for the "Enter" button
@@ -105,6 +154,7 @@ document.getElementById('button').addEventListener('click', function() {
         }
     });
     document.getElementById('ar').value = '';
+    playMatchSound(); // Play the match sound effect
 });
 
 // Function to perform DFS search and animation
@@ -113,14 +163,22 @@ function dfsSearch(startNodeLabel, endNodeLabel, directed) {
     const endNode = nodes.get().find(node => node.label === endNodeLabel);
 
     if (!startNode || !endNode) {
-        alert(`Node ${startNodeLabel} or ${endNode} not found!`);
+        alert(`Node ${startNodeLabel} or ${endNodeLabel} not found!`);
         return;
     }
 
-    const visited = new Set();
-    const stack = [startNode.id];
+    // Reset all node and edge colors before starting
+    resetNodeColors();
+    resetEdgeColors();
+
+    // Track visited nodes and edges
+    const visitedNodes = new Set();
+    const visitedEdges = new Set();
+
+    // Stack for DFS and path tracking
+    const stack = [[startNode.id, null]]; // [current node id, edge id]
     const path = [];
-    let delay = 1000; // Delay in milliseconds between each step
+    const delay = 1000; // Delay in milliseconds between each step
 
     const animateSearch = () => {
         if (stack.length === 0) {
@@ -128,24 +186,31 @@ function dfsSearch(startNodeLabel, endNodeLabel, directed) {
             return;
         }
 
-        const currentNodeId = stack.pop();
+        const [currentNodeId, currentEdgeId] = stack.pop();
         const currentNode = nodes.get(currentNodeId);
 
-        if (!visited.has(currentNodeId)) {
-            visited.add(currentNodeId);
+        if (!visitedNodes.has(currentNodeId)) {
+            visitedNodes.add(currentNodeId);
             path.push(currentNodeId);
 
             // Highlight the current node in red
             network.selectNodes([currentNodeId], { highlightEdges: false });
             network.body.nodes[currentNodeId].setOptions({ color: 'red' });
 
+            // If an edge was used to reach this node, highlight it in red
+            if (currentEdgeId !== null) {
+                network.body.edges[currentEdgeId].setOptions({ color: 'red' });
+                visitedEdges.add(currentEdgeId);
+            }
+
+            // Check if we've reached the end node
             if (currentNode.id === endNode.id) {
-                // Highlight the end node in green
                 network.body.nodes[currentNodeId].setOptions({ color: 'green' });
                 alert(`Path found from ${startNodeLabel} to ${endNodeLabel}!`);
                 return;
             }
 
+            // Get the neighbors of the current node
             const neighbors = edges.get({
                 filter: (edge) => {
                     if (directed) {
@@ -154,9 +219,17 @@ function dfsSearch(startNodeLabel, endNodeLabel, directed) {
                         return (edge.from === currentNodeId || edge.to === currentNodeId);
                     }
                 }
-            }).map(edge => (edge.from === currentNodeId ? edge.to : edge.from));
+            }).map(edge => {
+                const neighborId = edge.from === currentNodeId ? edge.to : edge.from;
+                return { neighborId, edgeId: edge.id };
+            });
 
-            stack.push(...neighbors.filter(neighborId => !visited.has(neighborId)));
+            // Add neighbors to the stack
+            neighbors.forEach(({ neighborId, edgeId }) => {
+                if (!visitedNodes.has(neighborId)) {
+                    stack.push([neighborId, edgeId]);
+                }
+            });
         }
 
         setTimeout(animateSearch, delay);
@@ -165,16 +238,31 @@ function dfsSearch(startNodeLabel, endNodeLabel, directed) {
     animateSearch();
 }
 
+// Function to reset edge colors
+function resetEdgeColors() {
+    edges.forEach(edge => {
+        network.body.edges[edge.id].setOptions({ color: null });
+    });
+    network.redraw();
+}
+
+
 // Add event listener for the "Directed" button
 document.getElementById('directedButton').addEventListener('click', function() {
-    options.edges = { arrows: { to: true } };
+    options.edges.arrows.to = true;
     network.setOptions(options);
 });
 
 // Add event listener for the "Undirected" button
 document.getElementById('undirectedButton').addEventListener('click', function() {
-    options.edges = { arrows: { to: false } };
+    options.edges.arrows.to = false;
     network.setOptions(options);
+
+    // Update existing edges to remove arrows
+    edges.forEach(function(edge) {
+        edge.arrows = undefined;
+    });
+    network.redraw();
 });
 
 // Event listener for the "Enter" button for DFS search
@@ -183,6 +271,7 @@ document.getElementById('button_dfs').addEventListener('click', function() {
     const [start, end] = input.split(' ');
     if (start && end) {
         dfsSearch(start, end, options.edges.arrows.to);
+        playMatchSound(); // Play the match sound effect
     } else {
         alert('Please enter a valid start and end node.');
     }
@@ -198,7 +287,6 @@ function resetNodeColors() {
     network.redraw();
 }
 
-
 // Add event listener to the "Clear" button
 document.getElementById('button_clear').addEventListener('click', function() {
     // Call the function to reset node colors
@@ -207,6 +295,7 @@ document.getElementById('button_clear').addEventListener('click', function() {
     // Play the swipe sound
     playSwipeSound();
 });
+
 // Add event listener to the "Enter" button
 document.getElementById('button').addEventListener('click', playMatchSound);
 
@@ -217,8 +306,7 @@ document.getElementById('button_dfs').addEventListener('click', playMatchSound);
 const clearButton = document.getElementById('b_clearGraph');
 
 // Add event listener to the "Clear" button
-// clearButton.addEventListener('click', clearGraph);
-clearButton.addEventListener('click', function(){
+clearButton.addEventListener('click', function() {
     clearGraph();
     playSwipeSound();
 });

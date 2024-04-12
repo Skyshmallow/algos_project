@@ -1,87 +1,185 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <!-- show code on site -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>    
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-grid.min.css" integrity="sha384-izn5L2B8ufGg/0mRnucUy5oFB9EKlNcmcLiBL8excWli03rO+VBfF2xAIshkD2LI" crossorigin="anonymous">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Babai - Algorithm Project</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
-    <title>Babai</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Roboto+Slab:wght@100..900&family=Cabin:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+
+    <!-- Prism CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css">
+
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
+
+
 </head>
 
 <body>
 
-<audio id="soundEffect" preload="auto">
-    <source src="fire-torch-whoosh-2-186586.mp3" type="audio/mpeg">
-    <source src="movement-swipe-whoosh-3-186577.mp3" type="audio/mpeg">
-</audio>
+    <!-- Header -->
+    <header class="bg-dark py-2">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <img src="https://sdu.edu.kz/wp-content/uploads/2023/08/logo-white.png" class="img-fluid" style="width: 80px; height: auto;" alt="SDU Logo">
+                </div>
+                <div class="col text-white">
+                    <h1 class="mb-0">Algorithm Project</h1>
+                </div>
+            </div>
+        </div>
+    </header>
 
-<div class="blue-container row">
-    <div class="col-md-auto">
-        <img src="https://sdu.edu.kz/wp-content/uploads/2023/08/logo-white.png" class="img-fluid" style="width: 80px; height: auto;" alt="SDU Logo">
-    </div>
-    <div class="col">
-        <div class="text mt-4 ">
-            <h1>Algorithm Project</h1>
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Graph Controls -->
+            <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Graph Controls</h5>
+                        <button id="directedButton" class="btn btn-outline-info mb-2">Directed <i class="fas fa-arrow-right"></i></button>
+                        <button id="undirectedButton" class="btn btn-outline-warning mb-2">Undirected <i class="fas fa-minus"></i></button>
+                        <button id="generate" class="btn btn-dark mb-2">Random Graph <i class="fas fa-wand-magic-sparkles"></i></button>
+                        <textarea id="ar" class="form-control mb-2" rows="4" placeholder="Write: A B&#10;to connect A and B"></textarea>
+                        
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <button id="button" class="btn btn-outline-danger w-100"><i class="fas fa-fire"></i> Enter</button>
+                            </div>
+                            <div class="col-6">
+                                <button id="b_clearGraph" class="btn btn-outline-info w-100">Clear Graph</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            <!-- Graph Display -->
+            <div class="col-md-6 mb-4">
+                <div id="mynetwork" class="card h-100">
+                    <div class="card-body text-center">
+                        <p class="mb-0">Graph Display</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Controls -->
+            <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Search Controls</h5>
+                        <textarea id="dfs_find" class="form-control mb-2" rows="4" placeholder="Write: A B&#10;to find route between them"></textarea>
+                        <button id="button_dfs" class="btn btn-outline-danger"><i class="fas fa-fire"></i> Enter</button>
+                        <button id="button_clear" class="btn btn-outline-info">Clear Color</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    
-</div>
 
-<div class="container mt-4 ">
-    <div class="row">
-        <div class="col-2">
-            <button id="directedButton" class="btn btn-outline-info">Directed<i class="fa-solid fa-arrow-right"></i></button>
-            <button id="undirectedButton" class="btn btn-outline-warning mt-1">Undirected<i class="fa-solid fa-minus"></i></button>
-        </div>
-        <div class="col-4" id="mynetwork"></div>
-        <div class="col-2">
-            <textarea name="ar" id="ar" cols="25" rows="8" placeholder="Write: A B&#10;to connect A and B"></textarea>
-            <button id="button" class="btn btn-outline-danger"><i class="fa-solid fa-fire"></i>Enter</button>
-            <button id="b_clearGraph" class="btn btn-outline-info ">Clear Graph</button>
-        </div>
-        <div class="col-2">
-            <textarea name="dfs_find" id="dfs_find" cols="25" rows="8" placeholder="Write: A B&#10;to find route between them"></textarea>
-            <button id="button_dfs" class="btn btn-outline-danger"><i class="fa-solid fa-fire"></i>Enter</button>
-            <button id="button_clear" class="btn btn-outline-info ">Clear Color</button>
+    <!-- About Us and Footer -->
+    <div class="bg-dark text-white py-3 mt-4 text-center " >
+        <p class="mb-0">By SDUdents: Nurlubek, Danial, Aidos, Adil, Arsen</p>
+    </div>
+
+    <!-- Video and Code Display -->
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-6">
+                <iframe class="mt-2 mx-auto d-block" width="100%" height="315" src="https://www.youtube.com/embed/Ai4eh_OCxvw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="col-md-6">
+                <pre><code class="language-javascript">// Function to perform DFS search and animation
+function dfsSearch(startNodeLabel, endNodeLabel, directed) {
+    const startNode = nodes.get().find(node => node.label === startNodeLabel);
+    const endNode = nodes.get().find(node => node.label === endNodeLabel);
+
+    if (!startNode || !endNode) {
+        alert(`Node ${startNodeLabel} or ${endNode} not found!`);
+        return;
+    }
+
+    const visited = new Set();
+    const stack = [startNode.id];
+    const path = [];
+    let delay = 1000; // Delay in milliseconds between each step
+
+    const animateSearch = () => {
+        if (stack.length === 0) {
+            alert(`No path found from ${startNodeLabel} to ${endNodeLabel}.`);
+            return;
+        }
+
+        const currentNodeId = stack.pop();
+        const currentNode = nodes.get(currentNodeId);
+
+        if (!visited.has(currentNodeId)) {
+            visited.add(currentNodeId);
+            path.push(currentNodeId);
+
+            // Highlight the current node in red
+            network.selectNodes([currentNodeId], { highlightEdges: false });
+            network.body.nodes[currentNodeId].setOptions({ color: 'red' });
+
+            if (currentNode.id === endNode.id) {
+                // Highlight the end node in green
+                network.body.nodes[currentNodeId].setOptions({ color: 'green' });
+                alert(`Path found from ${startNodeLabel} to ${endNodeLabel}!`);
+                return;
+            }
+
+            const neighbors = edges.get({
+                filter: (edge) => {
+                    if (directed) {
+                        return edge.from === currentNodeId;
+                    } else {
+                        return (edge.from === currentNodeId || edge.to === currentNodeId);
+                    }
+                }
+            }).map(edge => (edge.from === currentNodeId ? edge.to : edge.from));
+
+            stack.push(...neighbors.filter(neighborId => !visited.has(neighborId)));
+        }
+
+        setTimeout(animateSearch, delay);
+    };
+
+    animateSearch();
+}
+</code></pre>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="container mt-2 " style="background-color: #212153;">
-     <div class="row">
-    <div class="col-10  text "><p>By SDUdents</p></div>
-    <div class="col">
-        <img src="https://sun1-26.userapi.com/s/v1/if2/zV2bCrwbt_DgTIMok6uIk5vJ-aR-lNoUwo5n7wm96-fvT9fZWxQCuLsAp3LKEwZgsfzaD_4pkIAua0bc3rsNjv8V.jpg?quality=96&crop=112,107,856,856&as=50x50,100x100,200x200,400x400&ava=1&u=f9K2DO5LDFNhppqxtczLwEtzQPAnYWvRxkmMjRXYK6c&cs=200x200" alt="Arsen" style="border-radius: 50%; width: 40px;">
-        
-    </div>
- </div>
-</div>
+    <!-- Audio -->
+    <audio id="soundEffect" preload="auto">
+        <source src="fire-torch-whoosh-2-186586.mp3" type="audio/mpeg">
+        <source src="movement-swipe-whoosh-3-186577.mp3" type="audio/mpeg">
+    </audio>
 
-<!-- code displayer -->
-<div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <iframe class="mt-2 mx-auto d-block" width="100%" height="315" src="https://www.youtube.com/embed/Ai4eh_OCxvw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
-      <div class="col-md-6">
-        <pre><code class="language-javascript">// JavaScript code
-const hello = "world";
-console.log(hello);
-ALASTOR TOP   
-        </code></pre>
-      </div>
-    </div>
-  </div>
+    <!-- Bootstrap and Prism JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
 
-  <script src="script.js"></script>
+    <!-- Vis Network JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+
 </body>
 
 </html>
