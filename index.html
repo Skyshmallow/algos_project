@@ -63,36 +63,37 @@
     <!-- Main Content -->
     <div class="container mt-4">
         <div class="row">
-            <!-- Graph Controls -->
-         
-<div class="col-md-3 mb-4">
-    <div class="card h-100">
-        <div class="card-body">
-            <h5 class="card-title">Graph Controls</h5>
-            <button id="directedButton" class="btn btn-outline-info mb-2">Directed <i class="fas fa-arrow-right"></i></button>
-            <button id="undirectedButton" class="btn btn-outline-warning mb-2">Undirected <i class="fas fa-minus"></i></button>
-            <button id="generate" class="btn btn-dark mb-2">Random Graph <i class="fas fa-wand-magic-sparkles"></i></button>
-            <textarea id="ar" class="form-control mb-2" rows="4" placeholder="Write: A B&#10;to connect A and B"></textarea>
-            
-            <div class="row mb-2">
-                <div class="col-6">
-                    <button id="button" class="btn btn-outline-danger w-100"><i class="fas fa-fire"></i> Enter</button>
-                </div>
-                <div class="col-6">
-                    <button id="b_clearGraph" class="btn btn-outline-info w-100">Clear Graph</button>
-                </div>
-            </div>
 
-            <!-- New START Button Section -->
-            <div id="a">
-                <button id="start" class="btn btn-outline-info w-100" style="border-color: black;">START DFS</button>
-                <input id="dfs-v" type="text" title="Enter the source vertex" autocomplete="off" min="0" max="99" class="form-control mt-2" placeholder="Start Vertex">
+            <!-- Graph Controls -->
+            <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Graph Controls</h5>
+                        <button id="directedButton" class="btn btn-outline-info mb-2">Directed <i class="fas fa-arrow-right"></i></button>
+                        <button id="undirectedButton" class="btn btn-outline-warning mb-2">Undirected <i class="fas fa-minus"></i></button>
+                        <button id="generate" class="btn btn-dark mb-2">Random Graph <i class="fas fa-wand-magic-sparkles"></i></button>
+                        <textarea id="ar" class="form-control mb-2" rows="4" placeholder="Write: A B&#10;to connect A and B"></textarea>
+                        
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <button id="button" class="btn btn-outline-danger w-100"><i class="fas fa-fire"></i> Enter</button>
+                            </div>
+                            <div class="col-6">
+                                <button id="b_clearGraph" class="btn btn-outline-info w-100">Clear Graph</button>
+                            </div>
+                        </div>
+
+                        <!-- New START Button Section -->
+                        <div id="a">
+                            <button id="start" class="btn btn-outline-info w-100" style="border-color: black;">START DFS</button>
+                            <textarea id="dfs-v" title="Enter the source vertex" autocomplete="off" class="form-control mt-2" placeholder="Start at?" rows="4" cols="50"></textarea>
+
+                        </div>
+                        <!-- End of New START Button Section -->
+                        
+                    </div>
+                </div>
             </div>
-            <!-- End of New START Button Section -->
-            
-        </div>
-    </div>
-</div>
 
 
             <!-- Graph Display -->
@@ -105,18 +106,24 @@
             </div>
 
             <!-- Search Controls -->
-            <div class="col-md-3 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Search Controls</h5>
-                        <textarea id="dfs_find" class="form-control mb-2" rows="4" placeholder="Write: A B&#10;to find route between them"></textarea>
-                        <button id="button_dfs" class="btn btn-outline-danger"><i class="fas fa-fire"></i> Enter</button>
-                        <button id="button_clear" class="btn btn-outline-info">Clear Color</button>
-                    </div>
-                </div>
-            </div>
+       
+<div class="col-md-3 mb-4">
+    <div class="card h-100">
+        <div class="card-body">
+            <h5 class="card-title">Search Controls</h5>
+            <textarea id="dfs_find" class="form-control mb-2" rows="4" placeholder="Write: A B&#10;to find route between them"></textarea>
+            <button id="button_dfs" class="btn btn-outline-danger"><i class="fas fa-fire"></i> Enter</button>
+            <button id="button_clear" class="btn btn-outline-info">Clear Color</button>
         </div>
     </div>
+</div>
+<script>
+    document.getElementById('button_clear').addEventListener('click', () => {
+        resetNodeColors();
+        resetEdgeColors();
+        playSwipeSound(); // Add this line to play the swipe sound
+    });
+</script>
 
     <!-- About Us and Footer -->
     <div class="bg-dark text-white py-3 mt-4 text-center " >

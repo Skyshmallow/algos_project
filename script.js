@@ -262,16 +262,33 @@ function getNeighbors(currentNodeId, directed) {
 
 // Perform DFS traversal
 function performDFSTraversal() {
+    // Get the input from the user (the node label from which to start DFS traversal)
     const input = document.getElementById('dfs-v').value.trim();
-    const startNodeIndex = parseInt(input, 10);
+    const startNodeLabel = input;
 
-    if (!isNaN(startNodeIndex)) {
-        dfsTraversal(startNodeIndex, options.edges.arrows.to);
-    } else {
-        alert('Please enter a valid start node index.');
+    // Find the node with the given label
+    const startNode = nodes.get().find(node => node.label === startNodeLabel);
+
+    // Check if the node is found
+    if (!startNode) {
+        alert(`Node with label "${startNodeLabel}" not found!`);
+        return;
     }
+
+
+    const visited = new Set();
+    const stack = [startNode.id];
+
+    performTraversal(stack, visited, options.edges.arrows.to);
+    
+
+    // Clear the input field
     document.getElementById('dfs-v').value = '';
 }
+
+
+
+
 
 function dfsTraversal(startNodeIndex, directed) {
     if (startNodeIndex < 0 || startNodeIndex >= nodes.length) {
@@ -287,10 +304,13 @@ function dfsTraversal(startNodeIndex, directed) {
 
 function performTraversal(stack, visited, directed) {
     const delay = 1000;
+    const dfsPath = [];  // Initialize an array to track the DFS path
 
     const animateTraversal = () => {
         if (stack.length === 0) {
-            alert(`Traversal completed!`);
+            // Once traversal is complete, display the path in the placeholder of dfs-v input
+            const pathString = dfsPath.map(nodeId => nodes.get(nodeId).label).join(' -> ');
+            document.getElementById('dfs-v').placeholder = `DFS Path: ${pathString}`;
             return;
         }
 
@@ -299,6 +319,9 @@ function performTraversal(stack, visited, directed) {
 
         if (!visited.has(currentNodeId)) {
             visited.add(currentNodeId);
+
+            // Add the current node's ID to the path
+            dfsPath.push(currentNodeId);
 
             network.selectNodes([currentNodeId], { highlightEdges: false });
             network.body.nodes[currentNodeId].setOptions({ color: 'red' });
@@ -310,14 +333,21 @@ function performTraversal(stack, visited, directed) {
                     filter: edge => directed ? edge.from === currentNodeId : edge.from === currentNodeId || edge.to === currentNodeId
                 }).map(edge => edge.from === currentNodeId ? edge.to : edge.from);
 
+                // Add neighbors to the stack for further traversal
                 stack.push(...neighbors.filter(neighborId => !visited.has(neighborId)));
                 animateTraversal();
             }, delay);
+        } else {
+            // If the node was already visited, continue with the next iteration
+            animateTraversal();
         }
     };
 
+    // Start the traversal animation
     animateTraversal();
 }
+
+
 
 // Graph manipulation functions
 function resetNodeColors() {
