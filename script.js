@@ -251,6 +251,15 @@ function resetEdgeColors() {
 }
 
 
+// Function to reset edge colors
+function resetEdgeColors() {
+    edges.forEach(edge => {
+        network.body.edges[edge.id].setOptions({ color: null });
+    });
+    network.redraw();
+}
+
+
 function getNeighbors(currentNodeId, directed) {
     return edges.get({
         filter: edge => directed ? edge.from === currentNodeId : edge.from === currentNodeId || edge.to === currentNodeId
