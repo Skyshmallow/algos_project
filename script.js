@@ -295,22 +295,6 @@ function performDFSTraversal() {
     document.getElementById('dfs-v').value = '';
 }
 
-
-
-
-
-function dfsTraversal(startNodeIndex, directed) {
-    if (startNodeIndex < 0 || startNodeIndex >= nodes.length) {
-        alert(`Invalid start node index!`);
-        return;
-    }
-
-    const visited = new Set();
-    const stack = [nodes.getIds()[startNodeIndex]];
-
-    performTraversal(stack, visited, directed);
-}
-
 function performTraversal(stack, visited, directed) {
     const delay = 1000;
     const dfsPath = [];  // Initialize an array to track the DFS path
@@ -384,7 +368,9 @@ function playMatchSound() {
 function playSwipeSound() {
     playSound('movement-swipe-whoosh-3-186577.mp3');
 }
-
+function playClickSound() {
+    playSound('analog-appliance-button-15-186961.mp3');
+}
 function playSound(fileName) {
     const audioElement = document.getElementById('soundEffect');
     audioElement.currentTime = 0;
@@ -392,17 +378,19 @@ function playSound(fileName) {
     audioElement.play();
 }
 
-// Set directed/undirected edges
 function setDirectedEdges() {
     options.edges.arrows.to = true;
     network.setOptions(options);
+    playClickSound(); // Add this line to play the swipe sound
 }
 
 function setUndirectedEdges() {
     options.edges.arrows.to = false;
     network.setOptions(options);
     removeEdgeArrows();
+    playClickSound(); // Add this line to play the swipe sound
 }
+
 
 function removeEdgeArrows() {
     edges.forEach(edge => {

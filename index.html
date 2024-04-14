@@ -1,20 +1,11 @@
 <!DOCTYPE html>
 <html>
 
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Algorithm Project</title>
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Font Awesome CSS -->
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -29,19 +20,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css">
 
     <!-- Custom CSS -->
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Roboto+Slab:wght@100..900&family=Cabin:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-
-    <!-- Prism CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css">
-
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
-
-
-
-
 </head>
 
 <body>
@@ -82,18 +61,14 @@
                             </div>
                         </div>
 
-                        <!-- New START Button Section -->
+                        <!-- START DFS Section -->
                         <div id="a">
                             <button id="start" class="btn btn-outline-info w-100" style="border-color: black;">START DFS</button>
                             <textarea id="dfs-v" title="Enter the source vertex" autocomplete="off" class="form-control mt-2" placeholder="Start at?" rows="4" cols="50"></textarea>
-
                         </div>
-                        <!-- End of New START Button Section -->
-                        
                     </div>
                 </div>
             </div>
-
 
             <!-- Graph Display -->
             <div class="col-md-6 mb-4">
@@ -104,8 +79,7 @@
                 </div>
             </div>
 
-            <!-- Search Controls -->
-       
+         <!-- Search Controls -->
 <div class="col-md-3 mb-4">
     <div class="card h-100">
         <div class="card-body">
@@ -116,6 +90,7 @@
         </div>
     </div>
 </div>
+<!-- Script for Clear Color button -->
 <script>
     document.getElementById('button_clear').addEventListener('click', () => {
         resetNodeColors();
@@ -124,8 +99,9 @@
     });
 </script>
 
+
     <!-- About Us and Footer -->
-    <div class="bg-dark text-white py-3 mt-4 text-center " >
+    <div class="bg-dark text-white py-3 mt-4 text-center">
         <p class="mb-0">By SDUdents: Nurlubek, Danial, Aidos, Adil, Arsen</p>
     </div>
 
@@ -136,97 +112,41 @@
                 <iframe class="mt-2 mx-auto d-block" width="100%" height="315" src="https://www.youtube.com/embed/Ai4eh_OCxvw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
             <div class="col-md-6">
-                <pre><code class="language-javascript">// Function to perform DFS search and animation
-function dfsSearch(startNodeLabel, endNodeLabel, directed) {
-    const startNode = nodes.get().find(node => node.label === startNodeLabel);
-    const endNode = nodes.get().find(node => node.label === endNodeLabel);
+                <pre><code class="language-javascript">// Perform DFS traversal
+function performDFSTraversal() {
+    // Get the input from the user (the node label from which to start DFS traversal)
+    const input = document.getElementById('dfs-v').value.trim();
+    const startNodeLabel = input;
 
-    if (!startNode || !endNode) {
-        alert(`Node ${startNodeLabel} or ${endNode} not found!`);
+    // Find the node with the given label
+    const startNode = nodes.get().find(node => node.label === startNodeLabel);
+
+    // Check if the node is found
+    if (!startNode) {
+        alert(`Node with label "${startNodeLabel}" not found!`);
         return;
     }
 
+
     const visited = new Set();
     const stack = [startNode.id];
-    const path = [];
-    let delay = 1000; // Delay in milliseconds between each step
 
-    const animateSearch = () => {
-        if (stack.length === 0) {
-            alert(`No path found from ${startNodeLabel} to ${endNodeLabel}.`);
-            return;
-        }
+    performTraversal(stack, visited, options.edges.arrows.to);
+    
 
-        const currentNodeId = stack.pop();
-        const currentNode = nodes.get(currentNodeId);
-
-        if (!visited.has(currentNodeId)) {
-            visited.add(currentNodeId);
-            path.push(currentNodeId);
-
-            // Highlight the current node in red
-            network.selectNodes([currentNodeId], { highlightEdges: false });
-            network.body.nodes[currentNodeId].setOptions({ color: 'red' });
-
-            if (currentNode.id === endNode.id) {
-                // Highlight the end node in green
-                network.body.nodes[currentNodeId].setOptions({ color: 'green' });
-                alert(`Path found from ${startNodeLabel} to ${endNodeLabel}!`);
-                return;
-            }
-
-            const neighbors = edges.get({
-                filter: (edge) => {
-                    if (directed) {
-                        return edge.from === currentNodeId;
-                    } else {
-                        return (edge.from === currentNodeId || edge.to === currentNodeId);
-                    }
-                }
-            }).map(edge => (edge.from === currentNodeId ? edge.to : edge.from));
-
-            stack.push(...neighbors.filter(neighborId => !visited.has(neighborId)));
-        }
-
-        setTimeout(animateSearch, delay);
-    };
-
-    animateSearch();
+    // Clear the input field
+    document.getElementById('dfs-v').value = '';
 }
-</code></pre>
-            </div>
-        </div>
-    </div>
-    <!-- About Us and Footer -->
-    <div class="bg-dark text-white py-3 mt-4 text-center " >
-        <p class="mb-0">By SDUdents: Nurlubek, Danial, Aidos, Adil, Arsen</p>
-    </div>
 
-    <!-- Video and Code Display -->
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-6">
-                <iframe class="mt-2 mx-auto d-block" width="100%" height="315" src="https://www.youtube.com/embed/Ai4eh_OCxvw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <div class="col-md-6">
-                <pre><code class="language-javascript">// Function to perform DFS search and animation
-function dfsSearch(startNodeLabel, endNodeLabel, directed) {
-    const startNode = nodes.get().find(node => node.label === startNodeLabel);
-    const endNode = nodes.get().find(node => node.label === endNodeLabel);
+function performTraversal(stack, visited, directed) {
+    const delay = 1000;
+    const dfsPath = [];  // Initialize an array to track the DFS path
 
-    if (!startNode || !endNode) {
-        alert(`Node ${startNodeLabel} or ${endNode} not found!`);
-        return;
-    }
-
-    const visited = new Set();
-    const stack = [startNode.id];
-    const path = [];
-    let delay = 1000; // Delay in milliseconds between each step
-
-    const animateSearch = () => {
+    const animateTraversal = () => {
         if (stack.length === 0) {
-            alert(`No path found from ${startNodeLabel} to ${endNodeLabel}.`);
+            // Once traversal is complete, display the path in the placeholder of dfs-v input
+            const pathString = dfsPath.map(nodeId => nodes.get(nodeId).label).join(' -> ');
+            document.getElementById('dfs-v').placeholder = `DFS Path: ${pathString}`;
             return;
         }
 
@@ -235,36 +155,32 @@ function dfsSearch(startNodeLabel, endNodeLabel, directed) {
 
         if (!visited.has(currentNodeId)) {
             visited.add(currentNodeId);
-            path.push(currentNodeId);
 
-            // Highlight the current node in red
+            // Add the current node's ID to the path
+            dfsPath.push(currentNodeId);
+
             network.selectNodes([currentNodeId], { highlightEdges: false });
             network.body.nodes[currentNodeId].setOptions({ color: 'red' });
 
-            if (currentNode.id === endNode.id) {
-                // Highlight the end node in green
-                network.body.nodes[currentNodeId].setOptions({ color: 'green' });
-                alert(`Path found from ${startNodeLabel} to ${endNodeLabel}!`);
-                return;
-            }
+            setTimeout(() => {
+                network.body.nodes[currentNodeId].setOptions({ color: 'blue' });
 
-            const neighbors = edges.get({
-                filter: (edge) => {
-                    if (directed) {
-                        return edge.from === currentNodeId;
-                    } else {
-                        return (edge.from === currentNodeId || edge.to === currentNodeId);
-                    }
-                }
-            }).map(edge => (edge.from === currentNodeId ? edge.to : edge.from));
+                const neighbors = edges.get({
+                    filter: edge => directed ? edge.from === currentNodeId : edge.from === currentNodeId || edge.to === currentNodeId
+                }).map(edge => edge.from === currentNodeId ? edge.to : edge.from);
 
-            stack.push(...neighbors.filter(neighborId => !visited.has(neighborId)));
+                // Add neighbors to the stack for further traversal
+                stack.push(...neighbors.filter(neighborId => !visited.has(neighborId)));
+                animateTraversal();
+            }, delay);
+        } else {
+            // If the node was already visited, continue with the next iteration
+            animateTraversal();
         }
-
-        setTimeout(animateSearch, delay);
     };
 
-    animateSearch();
+    // Start the traversal animation
+    animateTraversal();
 }
 </code></pre>
             </div>
@@ -277,33 +193,12 @@ function dfsSearch(startNodeLabel, endNodeLabel, directed) {
         <source src="movement-swipe-whoosh-3-186577.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Bootstrap and Prism JS -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
-
-    <!-- Vis Network JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
-
-    <!-- Custom Script -->
-    <script src="script.js"></script>
-
-    <!-- Audio -->
-    <audio id="soundEffect" preload="auto">
-        <source src="fire-torch-whoosh-2-186586.mp3" type="audio/mpeg">
-        <source src="movement-swipe-whoosh-3-186577.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- Bootstrap and Prism JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
-
-    <!-- Vis Network JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
-
-    <!-- Custom Script -->
     <script src="script.js"></script>
 
 </body>
 
 </html>
-
